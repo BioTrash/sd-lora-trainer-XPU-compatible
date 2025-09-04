@@ -1,9 +1,8 @@
 --pre
---index-url https://download.pytorch.org/whl/nightly/xpu
---extra-index-url https://pypi.org/simple
-torch>=2.8.0
-torchaudio>=2.8.0
-torchvision>=0.23.0
+--extra-index-url https://download.pytorch.org/whl/nightly/xpu
+torch==2.9.0.dev20250903+xpu
+torchvision==0.24.0.dev20250904+xpu
+torchaudio>=2.8.0.dev20250904+xpu
 #torch>=2.1.0
 #torchaudio>=2.1.0
 #torchvision>=0.16.0
@@ -16,7 +15,8 @@ scipy==1.14.0
 peft==0.10.0
 invisible-watermark==0.2.0
 pandas==2.2.1
-numpy==1.26.4
+numpy>=1.24,<2.3
+#numpy==1.26.4
 opencv-python==4.10.0.84
 mediapipe==0.10.14
 openai==1.35.13
