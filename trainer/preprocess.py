@@ -233,6 +233,7 @@ def clipseg_mask_generator(
     # cleanup
     del model
     gc.collect()
+    #torch.cuda.empty_cache()    
     torch.xpu.empty_cache()
 
     return masks
@@ -428,6 +429,7 @@ def blip_caption_dataset(
     model.to("cpu")
     del model
     gc.collect()
+    #torch.cuda.empty_cache()
     torch.xpu.empty_cache()
 
     return captions
@@ -557,6 +559,7 @@ def florence_caption_dataset(images, captions):
     del model
     del processor
     gc.collect()
+    #torch.cuda.empty_cache()
     torch.xpu.empty_cache()
 
     return captions
@@ -585,6 +588,7 @@ def caption_dataset(
         captions = [""] * len(images)
 
     gc.collect()
+    #torch.cuda.empty_cache()
     torch.xpu.empty_cache()
 
     return captions
