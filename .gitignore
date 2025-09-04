@@ -1,25 +1,31 @@
-
+# Python cache & build
 cache
-__pycache__
+__pycache__/
 .ipynb_checkpoints/
-models
-lora_models*
-eden_lora_training_runs/
-datasets
-
 *.tar
+
+# Virtual environments
+env/
+.venv/
+venv/
+
+# Environment & package configs
 .env
 .cog
 .huggingface
+
+# Models & data
+models/
+lora_models*
+eden_lora_training_runs/
+datasets/
 rendered_images*
 
+# Experiments & outputs
 gridsearch*
 aesthetic_score_best_model.pth
-
-# experiment folders:
-scripts/plots
+scripts/plots/
 conditioning_spaces/
 training_args_x_*.json
 xander_configs/
 debug/*
-
