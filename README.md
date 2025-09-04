@@ -10,7 +10,7 @@ I am not personally or professionally affiliated with [**Eden** team]
 
 Create a venv using Python<=3.12. **Important:** As of making, 2025-09-04, Python==3.13 does not have prebuilt wheels for a number of packages that are required to run this trainer. You could attempt to build them from source instead but downgrading to Python<=3.12 is by far the simpler solution. I recommend:
 
-`pyenv install 3.12.6 && pyenv local 3.12.6` in case of warning message from pyenv run `pyenv init` and follow instructions provided by the package for your shell from there, and re-run `pyenv local 3.12.6`. You can check you current shell's python version with `python --version`
+`pyenv install 3.12.6 && pyenv local 3.12.6` in case of warning message from pyenv run `pyenv init` and follow instructions provided by the package for your shell from there, and re-run `pyenv local 3.12.6`. You can check your current shell's python version with `python --version`
 
 Continue as follows:
 
