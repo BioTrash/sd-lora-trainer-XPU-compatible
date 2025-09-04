@@ -18,7 +18,7 @@ Continue as follows:
 
 Create venv with correct version of python:
 
-`python -m venv .venv && cd .venv`
+`python -m venv .venv && cd .venv` remember to activate the venv via `source bin/activate` there will be several files, use the one fit for your shell, likely bash.
 
 Install all dependencies using: 
 
