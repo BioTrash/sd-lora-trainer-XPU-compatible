@@ -20,6 +20,7 @@ import mediapipe as mp
 import numpy as np
 import pandas as pd
 import torch
+from torch import autocast
 from tqdm import tqdm
 
 from transformers import (
@@ -114,7 +115,9 @@ def preprocess(
 
 
 @torch.no_grad()
-@torch.cuda.amp.autocast()
+#@torch.cuda.amp.autocast()
+@autocast(device_type="xpu", dtype=torch.bfloat16)
+
 def swin_ir_sr(
     images: List[Image.Image],
     model_id: Literal[
@@ -123,7 +126,8 @@ def swin_ir_sr(
         "caidas/swin2SR-realworld-sr-x4-64-bsrgan-psnr",
     ] = "caidas/swin2SR-realworld-sr-x4-64-bsrgan-psnr",
     target_size: Optional[Tuple[int, int]] = None,
-    device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu"),
+    #device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu"),
+    device=torch.device("xpu" if torch.xpu.is_available() else "cpu"),
     **kwargs,
 ) -> List[Image.Image]:
     """
@@ -164,14 +168,16 @@ def swin_ir_sr(
 
 
 @torch.no_grad()
-@torch.cuda.amp.autocast()
+#@torch.cuda.amp.autocast()
+@autocast(device_type="xpu", dtype=torch.bfloat16)
 def clipseg_mask_generator(
     images: List[Image.Image],
     target_prompts: Union[List[str], str],
     model_id: Literal[
         "CIDAS/clipseg-rd64-refined", "CIDAS/clipseg-rd16"
     ] = "CIDAS/clipseg-rd64-refined",
-    device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu"),
+    #device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu"),
+    device=torch.device("xpu" if torch.xpu.is_available() else "cpu"),
     bias: float = 0.01,
     temp: float = 1.0,
     **kwargs,
@@ -227,7 +233,7 @@ def clipseg_mask_generator(
     # cleanup
     del model
     gc.collect()
-    torch.cuda.empty_cache()
+    #torch.cuda.empty_cache()
 
     return masks
 
@@ -399,7 +405,8 @@ def blip_caption_dataset(
         return captions
 
     print(f"Using model {model_id} for image captioning...")
-    device=torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    #device=torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device=torch.device("xpu" if torch.xpu.is_available() else "cpu")
 
     if "blip2" in model_id:
         processor = Blip2Processor.from_pretrained(model_id, cache_dir = model_paths.get_path("BLIP"))
@@ -421,7 +428,7 @@ def blip_caption_dataset(
     model.to("cpu")
     del model
     gc.collect()
-    torch.cuda.empty_cache()
+    #torch.cuda.empty_cache()
 
     return captions
 
@@ -499,8 +506,10 @@ def gpt4_v_caption_dataset(
 
 
 
-device = "cuda:0" if torch.cuda.is_available() else "cpu"
-torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+#device = "cuda:0" if torch.cuda.is_available() else "cpu"
+device = "xpu" if torch.xpu.is_available() else "cpu"
+#torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+torch_dtype = torch.bfloat16 if torch.xpu.is_available() else torch.float32
 @torch.no_grad()
 def florence_caption_dataset(images, captions):
 
@@ -548,7 +557,7 @@ def florence_caption_dataset(images, captions):
     del model
     del processor
     gc.collect()
-    torch.cuda.empty_cache()
+    #torch.cuda.empty_cache()
 
     return captions
 
@@ -576,7 +585,7 @@ def caption_dataset(
         captions = [""] * len(images)
 
     gc.collect()
-    torch.cuda.empty_cache()
+    #torch.cuda.empty_cache()
 
     return captions
 

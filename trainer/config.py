@@ -5,6 +5,7 @@ import json, time, os
 from typing import Literal
 from trainer.utils.utils import pick_best_gpu_id
 from trainer.checkpoint import remove_delimiter_characters
+import torch
 
 class ModelPaths:
     def __init__(self):
@@ -100,7 +101,8 @@ class TrainingConfig(BaseModel):
     n_tokens: int = 3
     inserting_list_tokens: List[str] = ["<s0>","<s1>","<s2>"]
     token_dict: dict = {"TOK": "<s0><s1><s2>"}
-    device: str = "cuda:0"
+    #evice: str = "cuda:0"
+    device: str = "xpu:0"
     sample_imgs_lora_scale: float = None    # Default lora scale for sampling the validation images
     dataloader_num_workers: int = 0
     training_attributes: dict = {}
@@ -161,8 +163,16 @@ class TrainingConfig(BaseModel):
         self.inserting_list_tokens = inserting_list_tokens
         self.token_dict = {"TOK": "".join(inserting_list_tokens)}
 
-        gpu_id = pick_best_gpu_id()
-        self.device = f'cuda:{gpu_id}'
+        #gpu_id = pick_best_gpu_id()
+        #self.device = f'cuda:{gpu_id}'
+        
+        self.device = "xpu" if torch.device("xpu", torch.xpu.current_device()) else "cpu" # TO DO: Move to utils
+        
+        if torch.device("xpu", torch.xpu.current_device()):
+            print("XPU FOUND")
+        else:
+            print("XPU NOT FOUND")
+            
         self.start_time = time.time()
 
     @classmethod
