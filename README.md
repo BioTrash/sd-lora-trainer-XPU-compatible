@@ -28,7 +28,7 @@ From here on out you should be good to start changing the `train_configs/trainin
 
 After changing the .json file as you wish, you can start the training via `python main.py train_configs/training_args.json` from repo's root. The results will be saved under `eden_lora_training_runs` folder.
 
-As the `requirements.txt` uses were specific torch+xpu version, if the version ever become unreachable for whatever reason, likely because it is out of dev, run `pip install --force-reinstall torch torchvision torchaudio --pre --extra-index-url https://download.pytorch.org/whl/nightly/xpu` to manually force in the newest correct torch+xpu version.
+As the `requirements.txt` uses specific torch+xpu version, if the version ever become unreachable for whatever reason, likely because it is out of dev, run `pip install --force-reinstall torch torchvision torchaudio --pre --extra-index-url https://download.pytorch.org/whl/nightly/xpu` to manually force in the newest correct torch+xpu version.
 
 ---
 
