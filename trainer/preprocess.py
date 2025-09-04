@@ -233,7 +233,7 @@ def clipseg_mask_generator(
     # cleanup
     del model
     gc.collect()
-    #torch.cuda.empty_cache()
+    torch.xpu.empty_cache()
 
     return masks
 
@@ -411,24 +411,24 @@ def blip_caption_dataset(
     if "blip2" in model_id:
         processor = Blip2Processor.from_pretrained(model_id, cache_dir = model_paths.get_path("BLIP"))
         model = Blip2ForConditionalGeneration.from_pretrained(
-            model_id, cache_dir = model_paths.get_path("BLIP"), torch_dtype=torch.float16
+            model_id, cache_dir = model_paths.get_path("BLIP"), torch_dtype=torch.bfloat16
         ).to(device)
     else:
         processor = BlipProcessor.from_pretrained(model_id, cache_dir = model_paths.get_path("BLIP"))
         model = BlipForConditionalGeneration.from_pretrained(
-            model_id, cache_dir = model_paths.get_path("BLIP"), torch_dtype=torch.float16
+            model_id, cache_dir = model_paths.get_path("BLIP"), torch_dtype=torch.bfloat16
         ).to(device)
 
     for i, image in enumerate(tqdm(images)):
         if captions[i] is None:
-            inputs = processor(image, return_tensors="pt").to(device, torch.float16)
+            inputs = processor(image, return_tensors="pt").to(device, torch.bfloat16)
             out = model.generate(**inputs, max_length=100, do_sample=True, top_k=40, temperature=0.65)
             captions[i] = processor.decode(out[0], skip_special_tokens=True)
 
     model.to("cpu")
     del model
     gc.collect()
-    #torch.cuda.empty_cache()
+    torch.xpu.empty_cache()
 
     return captions
 
@@ -557,7 +557,7 @@ def florence_caption_dataset(images, captions):
     del model
     del processor
     gc.collect()
-    #torch.cuda.empty_cache()
+    torch.xpu.empty_cache()
 
     return captions
 
@@ -585,7 +585,7 @@ def caption_dataset(
         captions = [""] * len(images)
 
     gc.collect()
-    #torch.cuda.empty_cache()
+    torch.xpu.empty_cache()
 
     return captions
 

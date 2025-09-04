@@ -195,7 +195,7 @@ def train(config: TrainingConfig):
     # offload the vae to cpu and release memory:
     vae = vae.to('cpu')
     gc.collect()
-    #torch.cuda.empty_cache()
+    torch.xpu.empty_cache()
     
     train_dataloader = torch.utils.data.DataLoader(
         train_dataset,
@@ -449,7 +449,7 @@ def train(config: TrainingConfig):
                 shutil.copy(img_grid_path, os.path.join(os.path.dirname(output_save_dir), f"validation_grid_{global_step:04d}.jpg"))
                         
                 gc.collect()
-                #torch.cuda.empty_cache()
+                torch.xpu.empty_cache()
             
             images_done += config.train_batch_size
             global_step += 1
@@ -506,7 +506,7 @@ def train(config: TrainingConfig):
             del train_dataloader
             del train_dataset
             gc.collect()
-            #torch.cuda.empty_cache()
+            torch.xpu.empty_cache()
         else:
             # Just render images with the active pipe (faster, easier):
             pipe_to_use = pipe
