@@ -8,7 +8,7 @@ I am not personally or professionally affiliated with [**Eden** team]
 
 ## Setup
 
-Create a venv using Python<=3.12. **Important:** As of making, 2025-09-04, Python==3.13 does not have prebuilt wheels for a number of packages that are required to run this trainer. You could attempt to build them from source instead but downgrading to Python<=3.12 is ba far the simpler solution. I recommend:
+Create a venv using Python<=3.12. **Important:** As of making, 2025-09-04, Python==3.13 does not have prebuilt wheels for a number of packages that are required to run this trainer. You could attempt to build them from source instead but downgrading to Python<=3.12 is by far the simpler solution. I recommend:
 
 `pyenv install 3.12.6 && pyenv local 3.12.6` in case of warning message from pyenv run `pyenv init` and follow instructions provided by the package for your shell from there, and re-run `pyenv local 3.12.6`. You can check you current shell's python version with `python --version`
 
@@ -27,6 +27,8 @@ Install all dependencies using:
 From here on out you should be good to start changing the `train_configs/training_args.json`. Below you will find a description of all options possible to change in the .json file.
 
 After changing the .json file as you wish, you can start the training via `python main.py train_configs/training_args.json` from repo's root. The results will be saved under `eden_lora_training_runs` folder.
+
+As the `requirements.txt` uses were specific torch+xpu version, if the version ever become unreachable for whatever reason, likely because it is out of dev, run `pip install --force-reinstall torch torchvision torchaudio --pre --extra-index-url https://download.pytorch.org/whl/nightly/xpu` to manually force in the newest correct torch+xpu version.
 
 ---
 
